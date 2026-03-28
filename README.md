@@ -1,5 +1,7 @@
 # Wifiduck
 
+![wifiduck hero](docs/assets/hero-banner.svg)
+
 `wifiduck` is a SQL-first Wi-Fi troubleshooting toolkit built for DuckDB. It adds Wi-Fi-specific macros on top of packet capture data so engineers can investigate retries, disconnects, roaming churn, channel health, DHCP/DNS stalls, and early Wi-Fi 7 / MLO signals using focused queries instead of ad-hoc packet browsing.
 
 ## What makes it useful
