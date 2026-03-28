@@ -6,12 +6,16 @@
 - Multi-Link Operation visibility through MLD address and link-id fields
 - 6 GHz detection and wide-channel observation
 - Basic EHT STA profile count exposure when available
+- link-health imbalance and partial-link activation checks
+- link transition timelines for MLO troubleshooting
 
 ## Included example playbooks
 - `examples/sql/wifi7_playbook.sql`: overview queries, per-link inventory, link imbalance, channel spread, and MLO timeline inspection
 - `examples/sql/wifi7_link_diagnostics.sql`: focused link-health and band-consistency checks
+- `examples/sql/wifi7_mlo_report.sql`: report-oriented link health, missing-link, and transition queries
 - `examples/sql/wifi7_real_world_cases.sql`: staged triage, session proof, and pre-association retry-loop detection
 - `cases/wifi7-mlo-auth-loop/`: case pack for an MLO-era first-attempt authentication loop
+- `cases/wifi7-mlo-link-imbalance/`: case pack for weak-link and partial-activation analysis
 
 ## Important limits
 - Field availability depends on the capture NIC, driver, radiotap metadata, and dissector support.

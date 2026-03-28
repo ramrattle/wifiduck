@@ -45,6 +45,13 @@ SELECT * FROM wd_capture_report_jsonl('sample-data/jsonl/local_wpa.jsonl', 20);
 SELECT * FROM wd_mlo_overview_jsonl('sample-data/jsonl/wifi7_mlo_fixture.jsonl', 10);
 ```
 
+## Markdown incident report
+```bash
+python -m wifiduck_tools.report \
+  --input sample-data/jsonl/wifi7_mlo_fixture.jsonl \
+  --format jsonl
+```
+
 ## Current macro set
 - `wd_retry_hotspots` and `wd_retry_hotspots_jsonl`
 - `wd_disconnect_reasons` and `wd_disconnect_reasons_jsonl`
@@ -58,12 +65,13 @@ SELECT * FROM wd_mlo_overview_jsonl('sample-data/jsonl/wifi7_mlo_fixture.jsonl',
 - `wd_connection_sessions` and `wd_connection_sessions_jsonl`
 - `wd_capture_report` and `wd_capture_report_jsonl`
 - `wd_mlo_overview` / `wd_wifi7_capabilities` plus JSONL equivalents
+- `wd_wifi7_link_health`, `wd_wifi7_link_transitions`, and `wd_wifi7_missing_links` plus JSONL equivalents
 
 ## Sample data
 Public sample captures are tracked in [sample-data/notes/SOURCES.md](sample-data/notes/SOURCES.md). Wi-Fi 7 coverage is currently conservative: the repo ships JSONL fixtures for MLO-shaped examples and documents a public capture lead that still needs redistribution verification.
 
 ## Case packs and staged workflows
-Use `examples/sql/staged_triage.sql` for the standard `triage -> isolate -> prove -> explain` flow. Issue-focused walkthroughs live under `cases/`, including `roam-blackhole`, `retry-loop`, and `wifi7-mlo-auth-loop`.
+Use `examples/sql/staged_triage.sql` for the standard `triage -> isolate -> prove -> explain` flow. Issue-focused walkthroughs live under `cases/`, including `roam-blackhole`, `retry-loop`, `wifi7-mlo-auth-loop`, and `wifi7-mlo-link-imbalance`.
 
 ## Real-world Wi-Fi 7 example
 The project includes Wi-Fi 7 example playbooks under `examples/sql/`, including MLO-focused diagnostics. A practical public case for further expansion is Cisco 9800 Wi-Fi 7 capture analysis, where early MLO-era association behavior can produce abnormal authentication patterns before association.
