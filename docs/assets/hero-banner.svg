@@ -1,0 +1,107 @@
+<svg width="1600" height="640" viewBox="0 0 1600 640" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1600" y2="640" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#070B14"/>
+      <stop offset="0.5" stop-color="#0A1320"/>
+      <stop offset="1" stop-color="#05161A"/>
+    </linearGradient>
+    <radialGradient id="glowLeft" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(440 290) rotate(10) scale(520 300)">
+      <stop stop-color="#0BFFB7" stop-opacity="0.18"/>
+      <stop offset="1" stop-color="#0BFFB7" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="glowRight" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(1220 310) rotate(-5) scale(420 250)">
+      <stop stop-color="#3CCBFF" stop-opacity="0.22"/>
+      <stop offset="1" stop-color="#3CCBFF" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="trace" x1="860" y1="120" x2="1450" y2="520" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#3CCBFF"/>
+      <stop offset="1" stop-color="#0BFFB7"/>
+    </linearGradient>
+    <filter id="softGlow" x="-20%" y="-20%" width="140%" height="140%" color-interpolation-filters="sRGB">
+      <feGaussianBlur stdDeviation="6" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+    <pattern id="grid" x="0" y="0" width="48" height="48" patternUnits="userSpaceOnUse">
+      <path d="M48 0H0V48" stroke="#78E2FF" stroke-opacity="0.08"/>
+    </pattern>
+  </defs>
+
+  <rect width="1600" height="640" fill="url(#bg)"/>
+  <rect width="1600" height="640" fill="url(#grid)"/>
+  <rect width="1600" height="640" fill="url(#glowLeft)"/>
+  <rect width="1600" height="640" fill="url(#glowRight)"/>
+
+  <g opacity="0.22">
+    <path d="M0 102H1600" stroke="#9ACBFF" stroke-dasharray="4 10"/>
+    <path d="M0 202H1600" stroke="#9ACBFF" stroke-dasharray="4 10"/>
+    <path d="M0 302H1600" stroke="#9ACBFF" stroke-dasharray="4 10"/>
+    <path d="M0 402H1600" stroke="#9ACBFF" stroke-dasharray="4 10"/>
+    <path d="M0 502H1600" stroke="#9ACBFF" stroke-dasharray="4 10"/>
+  </g>
+
+  <g opacity="0.75" font-family="'SFMono-Regular', 'JetBrains Mono', 'Menlo', monospace" font-size="16" fill="#7DA8C1">
+    <text x="860" y="92">RADIOTAP.CHANNEL.FREQ</text>
+    <text x="860" y="126">WLAN.EHT.MULTI_LINK.LINK_ID</text>
+    <text x="860" y="160">DNS.QRY.NAME</text>
+    <text x="860" y="194">WLAN.FC.RETRY</text>
+  </g>
+
+  <g filter="url(#softGlow)">
+    <path d="M840 435C900 375 970 315 1040 322C1097 327 1118 399 1172 404C1232 409 1271 324 1330 317C1389 310 1451 363 1510 291" stroke="url(#trace)" stroke-width="5" stroke-linecap="round"/>
+    <path d="M850 482C917 462 958 436 1017 451C1068 463 1110 519 1168 518C1228 517 1268 428 1337 428C1395 428 1444 485 1503 462" stroke="#0BFFB7" stroke-opacity="0.9" stroke-width="3" stroke-linecap="round" stroke-dasharray="1 15"/>
+    <path d="M857 258C906 273 945 250 985 236C1019 224 1067 212 1105 225C1149 240 1172 286 1218 292C1254 297 1287 276 1318 259C1378 227 1444 214 1493 248" stroke="#3CCBFF" stroke-opacity="0.92" stroke-width="4" stroke-linecap="round"/>
+  </g>
+
+  <g opacity="0.88">
+    <circle cx="962" cy="322" r="5" fill="#3CCBFF"/>
+    <circle cx="1172" cy="404" r="6" fill="#0BFFB7"/>
+    <circle cx="1330" cy="317" r="5" fill="#3CCBFF"/>
+    <circle cx="1040" cy="322" r="5" fill="#0BFFB7"/>
+    <circle cx="1218" cy="292" r="5" fill="#3CCBFF"/>
+    <circle cx="985" cy="236" r="5" fill="#0BFFB7"/>
+  </g>
+
+  <g opacity="0.5">
+    <rect x="858" y="360" width="264" height="110" rx="18" fill="#08131D" stroke="#1D5A69"/>
+    <text x="888" y="398" font-family="'SFMono-Regular', 'JetBrains Mono', 'Menlo', monospace" font-size="18" fill="#9DD8EB">link_1  RSSI -49 dBm</text>
+    <text x="888" y="430" font-family="'SFMono-Regular', 'JetBrains Mono', 'Menlo', monospace" font-size="18" fill="#9DD8EB">link_2  RSSI -66 dBm</text>
+    <text x="888" y="462" font-family="'SFMono-Regular', 'JetBrains Mono', 'Menlo', monospace" font-size="18" fill="#0BFFB7">status  IMBALANCED</text>
+  </g>
+
+  <g opacity="0.38">
+    <path d="M1262 173C1294 141 1341 130 1381 142C1412 152 1435 177 1445 209C1451 228 1448 247 1448 266C1466 276 1480 293 1486 315C1495 348 1477 386 1445 405C1414 423 1376 422 1347 408C1320 394 1305 366 1298 337C1267 329 1240 308 1229 276C1218 243 1231 204 1262 173Z" stroke="#0BFFB7" stroke-opacity="0.35" stroke-width="4"/>
+    <circle cx="1364" cy="244" r="7" fill="#0BFFB7" fill-opacity="0.55"/>
+    <path d="M1379 243C1403 244 1424 256 1439 275" stroke="#0BFFB7" stroke-opacity="0.55" stroke-width="4" stroke-linecap="round"/>
+    <path d="M1336 331C1362 343 1394 342 1419 330" stroke="#0BFFB7" stroke-opacity="0.55" stroke-width="4" stroke-linecap="round"/>
+  </g>
+
+  <g>
+    <rect x="74" y="68" width="612" height="504" rx="28" fill="#07111A" fill-opacity="0.74" stroke="#21485A"/>
+    <rect x="94" y="88" width="572" height="464" rx="20" fill="#071018" fill-opacity="0.88"/>
+
+    <text x="126" y="180" font-family="'Avenir Next', 'Segoe UI', sans-serif" font-size="92" font-weight="700" letter-spacing="1.6" fill="#F4FCFF">wifiduck</text>
+    <text x="126" y="248" font-family="'Avenir Next', 'Segoe UI', sans-serif" font-size="31" font-weight="600" letter-spacing="1.4" fill="#9ED2E4">SQL-first Wi-Fi packet forensics</text>
+    <text x="126" y="314" font-family="'SFMono-Regular', 'JetBrains Mono', 'Menlo', monospace" font-size="28" fill="#0BFFB7">Sniff first. Guess later.</text>
+
+    <g opacity="0.95">
+      <rect x="126" y="366" width="150" height="12" rx="6" fill="#0BFFB7"/>
+      <rect x="290" y="366" width="106" height="12" rx="6" fill="#3CCBFF"/>
+      <rect x="410" y="366" width="70" height="12" rx="6" fill="#0BFFB7" fill-opacity="0.55"/>
+    </g>
+
+    <g opacity="0.86" font-family="'SFMono-Regular', 'JetBrains Mono', 'Menlo', monospace" font-size="20" fill="#89ABC1">
+      <text x="126" y="422">retry_hotspots()</text>
+      <text x="126" y="454">capture_report()</text>
+      <text x="126" y="486">wifi7_link_health()</text>
+    </g>
+
+    <g opacity="0.48">
+      <path d="M126 526H625" stroke="#21485A"/>
+      <path d="M126 528H533" stroke="#0BFFB7" stroke-width="2"/>
+      <circle cx="535" cy="528" r="4" fill="#0BFFB7"/>
+    </g>
+  </g>
+</svg>
