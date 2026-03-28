@@ -1,0 +1,26 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "wifiduck"
+version = "0.1.0"
+description = "SQL-first Wi-Fi troubleshooting macros for DuckDB and packet captures"
+readme = "README.md"
+requires-python = ">=3.11"
+license = {text = "MIT"}
+authors = [{name = "Wifiduck Contributors"}]
+dependencies = [
+  "duckdb>=1.2.0",
+  "scapy>=2.5.0",
+]
+
+[project.optional-dependencies]
+dev = []
+
+[tool.setuptools]
+package-dir = {"" = "src"}
+
+[tool.setuptools.packages.find]
+where = ["src"]
+

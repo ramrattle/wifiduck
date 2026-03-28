@@ -1,0 +1,15 @@
+.venv/
+__pycache__/
+.pytest_cache/
+*.pyc
+*.pyo
+*.pyd
+*.jsonl.tmp
+dist/
+build/
+*.egg-info/
+captures/
+research/
+docs/superpowers/
+examples/quickstart.sql
+examples/triage_playbook.sql

@@ -1,0 +1,3 @@
+{"ts": 100.0, "packet_num": 1, "tx_addr": "10:10:10:10:10:10", "rx_addr": "ff:ff:ff:ff:ff:ff", "subtype": 8, "retry_flag": 0, "reason_code": null, "channel_freq_mhz": 5955, "rssi_dbm": -45.0, "dns_query": null, "dhcp_hostname": null, "mld_mac_addr": "22:22:22:22:22:22", "link_id": 1, "eht_sta_profile_count": 2, "mld_id_present": 1, "channel_width_mhz": 320, "is_6ghz": 1}
+{"ts": 101.0, "packet_num": 2, "tx_addr": "10:10:10:10:10:11", "rx_addr": "ff:ff:ff:ff:ff:ff", "subtype": 8, "retry_flag": 0, "reason_code": null, "channel_freq_mhz": 6115, "rssi_dbm": -43.0, "dns_query": null, "dhcp_hostname": null, "mld_mac_addr": "22:22:22:22:22:22", "link_id": 2, "eht_sta_profile_count": 2, "mld_id_present": 1, "channel_width_mhz": 320, "is_6ghz": 1}
+
