@@ -39,7 +39,17 @@ SELECT
   CASE
     WHEN roam_event_count >= 2 AND (last_roam_ts - first_roam_ts) <= 2.0 THEN 'unstable'
     ELSE 'stable'
-  END AS status
+  END AS status,
+  CASE
+    WHEN roam_event_count >= 2 AND (last_roam_ts - first_roam_ts) <= 2.0
+      THEN 'Client reassociated repeatedly inside a short time window.'
+    ELSE 'Client roam activity stayed within a normal range.'
+  END AS summary,
+  CASE
+    WHEN roam_event_count >= 2 AND (last_roam_ts - first_roam_ts) <= 2.0
+      THEN 'Compare RSSI, target BSSID choice, and post-roam DHCP or DNS activity.'
+    ELSE 'No immediate roam follow-up is required.'
+  END AS next_step
 FROM summary
 ORDER BY roam_event_count DESC, tx_addr ASC
 LIMIT top_n;
@@ -85,7 +95,17 @@ SELECT
   CASE
     WHEN roam_event_count >= 2 AND (last_roam_ts - first_roam_ts) <= 2.0 THEN 'unstable'
     ELSE 'stable'
-  END AS status
+  END AS status,
+  CASE
+    WHEN roam_event_count >= 2 AND (last_roam_ts - first_roam_ts) <= 2.0
+      THEN 'Client reassociated repeatedly inside a short time window.'
+    ELSE 'Client roam activity stayed within a normal range.'
+  END AS summary,
+  CASE
+    WHEN roam_event_count >= 2 AND (last_roam_ts - first_roam_ts) <= 2.0
+      THEN 'Compare RSSI, target BSSID choice, and post-roam DHCP or DNS activity.'
+    ELSE 'No immediate roam follow-up is required.'
+  END AS next_step
 FROM summary
 ORDER BY roam_event_count DESC, tx_addr ASC
 LIMIT top_n;

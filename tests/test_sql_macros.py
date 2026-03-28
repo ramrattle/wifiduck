@@ -11,6 +11,7 @@ WPA_FIXTURE = REPO_ROOT / "sample-data" / "jsonl" / "wpa_induction_fixture.jsonl
 def load_sql_modules() -> str:
     sql_files = [
         REPO_ROOT / "sql" / "core" / "wifi_packets.sql",
+        REPO_ROOT / "sql" / "core" / "classified_packets.sql",
         REPO_ROOT / "sql" / "macros" / "retries.sql",
         REPO_ROOT / "sql" / "macros" / "disconnects.sql",
         REPO_ROOT / "sql" / "macros" / "channels.sql",
@@ -18,6 +19,9 @@ def load_sql_modules() -> str:
         REPO_ROOT / "sql" / "macros" / "dhcp_dns.sql",
         REPO_ROOT / "sql" / "macros" / "client_experience.sql",
         REPO_ROOT / "sql" / "macros" / "handshakes.sql",
+        REPO_ROOT / "sql" / "macros" / "packet_classes.sql",
+        REPO_ROOT / "sql" / "macros" / "sessions.sql",
+        REPO_ROOT / "sql" / "macros" / "reports.sql",
         REPO_ROOT / "sql" / "macros" / "wifi7.sql",
     ]
     return "\n\n".join(path.read_text(encoding="utf-8") for path in sql_files)
@@ -129,3 +133,60 @@ class SqlMacroTests(unittest.TestCase):
         ).fetchone()
 
         self.assertEqual(row, ("ee:ee:ee:ee:ee:ee", 3, 1, 4, "retry_loop"))
+
+    def test_packet_class_histogram_jsonl_summarizes_capture_mix(self) -> None:
+        row = self.con.execute(
+            """
+            SELECT packet_class, frames, unique_talkers
+            FROM wd_packet_class_histogram_jsonl(?, 10)
+            WHERE packet_class = 'authentication'
+            """,
+            [str(WPA_FIXTURE)],
+        ).fetchone()
+
+        self.assertEqual(row, ("authentication", 6, 2))
+
+    def test_connection_sessions_jsonl_groups_join_attempts(self) -> None:
+        row = self.con.execute(
+            """
+            SELECT
+              subject_addr,
+              peer_addr,
+              session_kind,
+              auth_frames,
+              assoc_request_frames,
+              l3_frames,
+              status
+            FROM wd_connection_sessions_jsonl(?, 10)
+            WHERE subject_addr = 'ee:ee:ee:ee:ee:ee'
+            """,
+            [str(WPA_FIXTURE)],
+        ).fetchone()
+
+        self.assertEqual(
+            row,
+            ("ee:ee:ee:ee:ee:ee", "33:33:33:33:33:33", "join_attempt", 3, 1, 0, "retry_loop"),
+        )
+
+    def test_capture_report_jsonl_returns_summary_and_next_step(self) -> None:
+        row = self.con.execute(
+            """
+            SELECT issue_type, subject_addr, severity, status, summary, next_step
+            FROM wd_capture_report_jsonl(?, 10)
+            WHERE issue_type = 'post_roam_blackhole'
+              AND subject_addr = 'cc:cc:cc:cc:cc:cc'
+            """,
+            [str(WPA_FIXTURE)],
+        ).fetchone()
+
+        self.assertEqual(
+            row,
+            (
+                "post_roam_blackhole",
+                "cc:cc:cc:cc:cc:cc",
+                "critical",
+                "suspected_blackhole",
+                "Client roamed but showed no DHCP or DNS activity afterward.",
+                "Inspect DHCP, ARP, or key state immediately after the reassociation.",
+            ),
+        )

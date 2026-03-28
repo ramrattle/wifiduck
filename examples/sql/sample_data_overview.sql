@@ -1,5 +1,8 @@
 -- JSONL-backed examples for environments without the wireduck extension.
 SELECT * FROM wd_retry_hotspots_jsonl('sample-data/jsonl/wpa_induction_fixture.jsonl', 10);
+SELECT * FROM wd_packet_class_histogram_jsonl('sample-data/jsonl/wpa_induction_fixture.jsonl', 10);
+SELECT * FROM wd_connection_sessions_jsonl('sample-data/jsonl/wpa_induction_fixture.jsonl', 10);
+SELECT * FROM wd_capture_report_jsonl('sample-data/jsonl/wpa_induction_fixture.jsonl', 10);
 SELECT * FROM wd_dns_dhcp_gaps_jsonl('sample-data/jsonl/wpa_induction_fixture.jsonl', 10);
 SELECT * FROM wd_roam_health_jsonl('sample-data/jsonl/wpa_induction_fixture.jsonl', 10);
 SELECT * FROM wd_post_roam_blackhole_jsonl('sample-data/jsonl/wpa_induction_fixture.jsonl', 10);

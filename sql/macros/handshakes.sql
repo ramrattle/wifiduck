@@ -41,7 +41,17 @@ SELECT
     WHEN auth_frames >= 3 THEN 'retry_loop'
     WHEN auth_frames = 2 THEN 'double_auth'
     ELSE 'normal'
-  END AS status
+  END AS status,
+  CASE
+    WHEN auth_frames >= 3 THEN 'Authentication repeated three times before the first association request.'
+    WHEN auth_frames = 2 THEN 'Authentication was repeated before association.'
+    ELSE 'Authentication and association sequencing looked normal.'
+  END AS summary,
+  CASE
+    WHEN auth_frames >= 3 THEN 'Validate supported AKMs, RSN policy, and whether the client retried with a different security path.'
+    WHEN auth_frames = 2 THEN 'Compare the first and second authentication exchanges for status-code differences.'
+    ELSE 'No immediate handshake follow-up is required.'
+  END AS next_step
 FROM pre_assoc
 ORDER BY handshake_attempt_frames DESC, tx_addr ASC
 LIMIT top_n;
@@ -89,8 +99,17 @@ SELECT
     WHEN auth_frames >= 3 THEN 'retry_loop'
     WHEN auth_frames = 2 THEN 'double_auth'
     ELSE 'normal'
-  END AS status
+  END AS status,
+  CASE
+    WHEN auth_frames >= 3 THEN 'Authentication repeated three times before the first association request.'
+    WHEN auth_frames = 2 THEN 'Authentication was repeated before association.'
+    ELSE 'Authentication and association sequencing looked normal.'
+  END AS summary,
+  CASE
+    WHEN auth_frames >= 3 THEN 'Validate supported AKMs, RSN policy, and whether the client retried with a different security path.'
+    WHEN auth_frames = 2 THEN 'Compare the first and second authentication exchanges for status-code differences.'
+    ELSE 'No immediate handshake follow-up is required.'
+  END AS next_step
 FROM pre_assoc
 ORDER BY handshake_attempt_frames DESC, tx_addr ASC
 LIMIT top_n;
-

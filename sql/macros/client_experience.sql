@@ -29,7 +29,21 @@ SELECT
     WHEN l3_events.first_dhcp_or_dns_ts IS NULL THEN 'suspected_blackhole'
     WHEN l3_events.first_dhcp_or_dns_ts - roam_events.roam_ts > 1.0 THEN 'slow_recovery'
     ELSE 'recovered'
-  END AS status
+  END AS status,
+  CASE
+    WHEN l3_events.first_dhcp_or_dns_ts IS NULL
+      THEN 'Client roamed but showed no DHCP or DNS activity afterward.'
+    WHEN l3_events.first_dhcp_or_dns_ts - roam_events.roam_ts > 1.0
+      THEN 'Client recovered after roaming, but higher-layer traffic was delayed.'
+    ELSE 'Client resumed DHCP or DNS activity quickly after roaming.'
+  END AS summary,
+  CASE
+    WHEN l3_events.first_dhcp_or_dns_ts IS NULL
+      THEN 'Inspect DHCP, ARP, or key state immediately after the reassociation.'
+    WHEN l3_events.first_dhcp_or_dns_ts - roam_events.roam_ts > 1.0
+      THEN 'Check controller timers, upstream latency, and retransmissions around the roam.'
+    ELSE 'No immediate client-experience follow-up is required.'
+  END AS next_step
 FROM roam_events
 LEFT JOIN l3_events
   ON roam_events.tx_addr = l3_events.tx_addr
@@ -67,10 +81,23 @@ SELECT
     WHEN l3_events.first_dhcp_or_dns_ts IS NULL THEN 'suspected_blackhole'
     WHEN l3_events.first_dhcp_or_dns_ts - roam_events.roam_ts > 1.0 THEN 'slow_recovery'
     ELSE 'recovered'
-  END AS status
+  END AS status,
+  CASE
+    WHEN l3_events.first_dhcp_or_dns_ts IS NULL
+      THEN 'Client roamed but showed no DHCP or DNS activity afterward.'
+    WHEN l3_events.first_dhcp_or_dns_ts - roam_events.roam_ts > 1.0
+      THEN 'Client recovered after roaming, but higher-layer traffic was delayed.'
+    ELSE 'Client resumed DHCP or DNS activity quickly after roaming.'
+  END AS summary,
+  CASE
+    WHEN l3_events.first_dhcp_or_dns_ts IS NULL
+      THEN 'Inspect DHCP, ARP, or key state immediately after the reassociation.'
+    WHEN l3_events.first_dhcp_or_dns_ts - roam_events.roam_ts > 1.0
+      THEN 'Check controller timers, upstream latency, and retransmissions around the roam.'
+    ELSE 'No immediate client-experience follow-up is required.'
+  END AS next_step
 FROM roam_events
 LEFT JOIN l3_events
   ON roam_events.tx_addr = l3_events.tx_addr
 ORDER BY roam_events.roam_ts DESC
 LIMIT top_n;
-

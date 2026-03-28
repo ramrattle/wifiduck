@@ -11,6 +11,7 @@ WIFI7_FIXTURE = REPO_ROOT / "sample-data" / "jsonl" / "wifi7_mlo_fixture.jsonl"
 def load_sql_modules() -> str:
     sql_files = [
         REPO_ROOT / "sql" / "core" / "wifi_packets.sql",
+        REPO_ROOT / "sql" / "core" / "classified_packets.sql",
         REPO_ROOT / "sql" / "macros" / "retries.sql",
         REPO_ROOT / "sql" / "macros" / "disconnects.sql",
         REPO_ROOT / "sql" / "macros" / "channels.sql",
@@ -18,6 +19,9 @@ def load_sql_modules() -> str:
         REPO_ROOT / "sql" / "macros" / "dhcp_dns.sql",
         REPO_ROOT / "sql" / "macros" / "client_experience.sql",
         REPO_ROOT / "sql" / "macros" / "handshakes.sql",
+        REPO_ROOT / "sql" / "macros" / "packet_classes.sql",
+        REPO_ROOT / "sql" / "macros" / "sessions.sql",
+        REPO_ROOT / "sql" / "macros" / "reports.sql",
         REPO_ROOT / "sql" / "macros" / "wifi7.sql",
     ]
     return "\n\n".join(path.read_text(encoding="utf-8") for path in sql_files)
@@ -68,3 +72,24 @@ class Wifi7MacroTests(unittest.TestCase):
         ).fetchone()
 
         self.assertEqual(row, ("a2:02:a5:e0:54:5f", 3, 1, 4, "retry_loop"))
+
+    def test_wifi7_capture_report_jsonl_flags_mlo_retry_loop(self) -> None:
+        row = self.con.execute(
+            """
+            SELECT issue_type, subject_addr, severity, summary
+            FROM wd_capture_report_jsonl(?, 10)
+            WHERE issue_type = 'auth_assoc_loop'
+              AND subject_addr = 'a2:02:a5:e0:54:5f'
+            """,
+            [str(WIFI7_FIXTURE)],
+        ).fetchone()
+
+        self.assertEqual(
+            row,
+            (
+                "auth_assoc_loop",
+                "a2:02:a5:e0:54:5f",
+                "high",
+                "Authentication repeated three times before the first association request.",
+            ),
+        )
