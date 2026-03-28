@@ -93,3 +93,27 @@ class Wifi7MacroTests(unittest.TestCase):
                 "Authentication repeated three times before the first association request.",
             ),
         )
+
+    def test_wifi7_link_health_jsonl_flags_imbalance(self) -> None:
+        row = self.con.execute(
+            """
+            SELECT mld_mac_addr, weakest_link_id, strongest_link_id, imbalance_status
+            FROM wd_wifi7_link_health_jsonl(?, 10)
+            WHERE mld_mac_addr = '44:44:44:44:44:44'
+            """,
+            [str(WIFI7_FIXTURE)],
+        ).fetchone()
+
+        self.assertEqual(row, ("44:44:44:44:44:44", 2, 1, "imbalanced"))
+
+    def test_wifi7_missing_links_jsonl_flags_partial_activation(self) -> None:
+        row = self.con.execute(
+            """
+            SELECT mld_mac_addr, expected_links, active_links, status
+            FROM wd_wifi7_missing_links_jsonl(?, 10)
+            WHERE mld_mac_addr = '44:44:44:44:44:44'
+            """,
+            [str(WIFI7_FIXTURE)],
+        ).fetchone()
+
+        self.assertEqual(row, ("44:44:44:44:44:44", 2, 1, "partial_activation"))
