@@ -59,7 +59,7 @@ class Wifi7MacroTests(unittest.TestCase):
             [str(WIFI7_FIXTURE)],
         ).fetchone()
 
-        self.assertEqual(row, (9, 9, 9))
+        self.assertEqual(row, (10, 10, 10))
 
     def test_wifi7_auth_assoc_loops_jsonl_highlights_first_attempt_failure_pattern(self) -> None:
         row = self.con.execute(
