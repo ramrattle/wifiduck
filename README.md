@@ -46,7 +46,10 @@ SELECT * FROM wd_mlo_overview_jsonl('sample-data/jsonl/wifi7_mlo_fixture.jsonl',
 - `wd_disconnect_reasons` and `wd_disconnect_reasons_jsonl`
 - `wd_channel_health` and `wd_channel_health_jsonl`
 - `wd_roaming_events` and `wd_roaming_events_jsonl`
+- `wd_roam_health` and `wd_roam_health_jsonl`
 - `wd_dns_dhcp_gaps` and `wd_dns_dhcp_gaps_jsonl`
+- `wd_post_roam_blackhole` and `wd_post_roam_blackhole_jsonl`
+- `wd_auth_assoc_loops` and `wd_auth_assoc_loops_jsonl`
 - `wd_mlo_overview` / `wd_wifi7_capabilities` plus JSONL equivalents
 
 ## Sample data

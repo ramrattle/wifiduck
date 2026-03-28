@@ -16,6 +16,8 @@ def load_sql_modules() -> str:
         REPO_ROOT / "sql" / "macros" / "channels.sql",
         REPO_ROOT / "sql" / "macros" / "roaming.sql",
         REPO_ROOT / "sql" / "macros" / "dhcp_dns.sql",
+        REPO_ROOT / "sql" / "macros" / "client_experience.sql",
+        REPO_ROOT / "sql" / "macros" / "handshakes.sql",
         REPO_ROOT / "sql" / "macros" / "wifi7.sql",
     ]
     return "\n\n".join(path.read_text(encoding="utf-8") for path in sql_files)
@@ -34,6 +36,7 @@ class Wifi7MacroTests(unittest.TestCase):
             """
             SELECT mld_mac_addr, frame_count, distinct_link_ids, sta_profile_count
             FROM wd_mlo_overview_jsonl(?, 10)
+            WHERE mld_mac_addr = '22:22:22:22:22:22'
             """,
             [str(WIFI7_FIXTURE)],
         ).fetchone()
@@ -52,4 +55,16 @@ class Wifi7MacroTests(unittest.TestCase):
             [str(WIFI7_FIXTURE)],
         ).fetchone()
 
-        self.assertEqual(row, (2, 2, 2))
+        self.assertEqual(row, (9, 9, 9))
+
+    def test_wifi7_auth_assoc_loops_jsonl_highlights_first_attempt_failure_pattern(self) -> None:
+        row = self.con.execute(
+            """
+            SELECT tx_addr, auth_frames, assoc_request_frames, handshake_attempt_frames, status
+            FROM wd_auth_assoc_loops_jsonl(?, 10)
+            WHERE tx_addr = 'a2:02:a5:e0:54:5f'
+            """,
+            [str(WIFI7_FIXTURE)],
+        ).fetchone()
+
+        self.assertEqual(row, ("a2:02:a5:e0:54:5f", 3, 1, 4, "retry_loop"))

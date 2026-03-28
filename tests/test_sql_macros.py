@@ -16,6 +16,8 @@ def load_sql_modules() -> str:
         REPO_ROOT / "sql" / "macros" / "channels.sql",
         REPO_ROOT / "sql" / "macros" / "roaming.sql",
         REPO_ROOT / "sql" / "macros" / "dhcp_dns.sql",
+        REPO_ROOT / "sql" / "macros" / "client_experience.sql",
+        REPO_ROOT / "sql" / "macros" / "handshakes.sql",
         REPO_ROOT / "sql" / "macros" / "wifi7.sql",
     ]
     return "\n\n".join(path.read_text(encoding="utf-8") for path in sql_files)
@@ -66,14 +68,14 @@ class SqlMacroTests(unittest.TestCase):
             [str(WPA_FIXTURE)],
         ).fetchall()
 
-        self.assertEqual(rows[0], (5180, 4, 50.0))
+        self.assertEqual(rows[0], (5180, 11, 18.18))
 
     def test_roaming_events_jsonl_finds_management_activity(self) -> None:
         rows = self.con.execute(
             """
             SELECT tx_addr, subtype, events
             FROM wd_roaming_events_jsonl(?, 10)
-            ORDER BY events DESC, tx_addr ASC
+            WHERE tx_addr = 'cc:cc:cc:cc:cc:cc'
             """,
             [str(WPA_FIXTURE)],
         ).fetchall()
@@ -91,3 +93,39 @@ class SqlMacroTests(unittest.TestCase):
         ).fetchone()
 
         self.assertEqual(row, ("bb:bb:bb:bb:bb:bb", 1, 1, 500))
+
+    def test_roam_health_jsonl_flags_reassociation_churn(self) -> None:
+        row = self.con.execute(
+            """
+            SELECT tx_addr, roam_event_count, roam_window_ms, status
+            FROM wd_roam_health_jsonl(?, 10)
+            WHERE tx_addr = 'cc:cc:cc:cc:cc:cc'
+            """,
+            [str(WPA_FIXTURE)],
+        ).fetchone()
+
+        self.assertEqual(row, ("cc:cc:cc:cc:cc:cc", 2, 1000, "unstable"))
+
+    def test_post_roam_blackhole_jsonl_flags_missing_l3_after_reassoc(self) -> None:
+        row = self.con.execute(
+            """
+            SELECT tx_addr, roam_ts, first_dhcp_or_dns_ts, l3_gap_ms, status
+            FROM wd_post_roam_blackhole_jsonl(?, 10)
+            WHERE tx_addr = 'cc:cc:cc:cc:cc:cc'
+            """,
+            [str(WPA_FIXTURE)],
+        ).fetchone()
+
+        self.assertEqual(row, ("cc:cc:cc:cc:cc:cc", 21.0, None, None, "suspected_blackhole"))
+
+    def test_auth_assoc_loops_jsonl_flags_excessive_pre_assoc_frames(self) -> None:
+        row = self.con.execute(
+            """
+            SELECT tx_addr, auth_frames, assoc_request_frames, handshake_attempt_frames, status
+            FROM wd_auth_assoc_loops_jsonl(?, 10)
+            WHERE tx_addr = 'ee:ee:ee:ee:ee:ee'
+            """,
+            [str(WPA_FIXTURE)],
+        ).fetchone()
+
+        self.assertEqual(row, ("ee:ee:ee:ee:ee:ee", 3, 1, 4, "retry_loop"))

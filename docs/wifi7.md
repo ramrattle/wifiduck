@@ -10,6 +10,7 @@
 ## Included example playbooks
 - `examples/sql/wifi7_playbook.sql`: overview queries, per-link inventory, link imbalance, channel spread, and MLO timeline inspection
 - `examples/sql/wifi7_link_diagnostics.sql`: focused link-health and band-consistency checks
+- `examples/sql/wifi7_real_world_cases.sql`: real-world inspired Wi-Fi 7 / MLO anomaly queries, including pre-association retry-loop detection
 
 ## Important limits
 - Field availability depends on the capture NIC, driver, radiotap metadata, and dissector support.
